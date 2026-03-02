@@ -13,3 +13,5 @@ export const useToastStore = create((set) => ({
     set((state) => ({ toasts: state.toasts.filter((t) => t.id !== id) }))
   },
 }))
+
+//  bu yerda esa toastStore yaratiladi, bu store yordamida toast xabarlarini boshqarish mumkin bo'ladi. toasts state o'zgaruvchisi toast xabarlarini saqlaydi, addToast funksiyasi yangi toast qo'shadi va avtomatik ravishda 3 soniya o'tgach uni o'chiradi, removeToast funksiyasi esa ma'lum bir id ga ega bo'lgan toastni o'chiradi.

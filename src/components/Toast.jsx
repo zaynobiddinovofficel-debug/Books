@@ -28,5 +28,6 @@ export default function Toast() {
         </div>
       ))}
     </div>
+    // bu yerda esa Toast componenti yaratiladi, bu componentda toast xabarlari ko'rsatiladi. Toast xabarlari useToastStore dan olinadi, bu store toast xabarlarini boshqarish uchun ishlatiladi. Har bir toast xabari uchun uning turi (success yoki error) va xabar matni ko'rsatiladi. Har bir toast xabari uchun yopish tugmasi mavjud bo'lib, bu tugma bosilganda removeToast funksiyasi chaqiriladi va toast xabari ro'yxatdan o'chiriladi. Toast xabarlari ekranning yuqori o'ng burchagida vertikal ravishda joylashtiriladi va ular orasida kichik bo'shliq mavjud bo'ladi.
   )
 }

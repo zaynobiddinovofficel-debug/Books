@@ -31,6 +31,7 @@ function SkeletonCard() {
     </div>
   )
 }
+// bu yerda esa Dashboard componenti yaratiladi, bu componentda materiallar ro'yxati ko'rsatiladi va foydalanuvchi yangi material qo'shishi yoki mavjud materialni tahrirlashi mumkin. useState va useEffect hooklari ishlatiladi, useNavigate hooki ham ishlatiladi, bu sahifalar orasida navigatsiya qilish uchun kerak bo'ladi. CATEGORY_COLORS va FILTER_TABS kabi konstantalar ham yaratiladi, bu kategoriyalarni ranglash va filtrlash uchun ishlatiladi. SkeletonCard komponenti esa loading holatida korsatadi va skleton carni chiqaradi foydalanuvchiga ma'lumot kelyotganini bildirish uchun.
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -41,6 +42,8 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("Barchasi")
   const [showModal, setShowModal] = useState(false)
   const [editItem, setEditItem] = useState(null)
+
+  // bu yerda esa bir nechta state o'zgaruvchilar yaratiladi: materials (materiallar ro'yxati), loading (ma'lumot olinayotganini bildiradi), error (xatolik xabarini saqlaydi), search (qidiruv matni), activeTab (faol kategoriya), showModal (modalni ko'rsatish yoki yashirish), editItem (tahrirlanayotgan material ma'lumotlarini saqlaydi).
 
   useEffect(() => {
     setLoading(true)
@@ -58,23 +61,28 @@ export default function Dashboard() {
         setLoading(false)
       })
   }, [])
-
+  //  Serverdan ma'lumot olinadi JSON formatiga o'giradi va state ga saqlanadi. Agar xatolik yuz bersa, error state ga xabar saqlanadi. loading state esa ma'lumot olinayotganini bildiradi va oxirida false ga o'zgartiriladi.
   const filtered = materials.filter(
     (m) =>
       m.title?.toLowerCase().includes(search.toLowerCase()) &&
       (activeTab === "Barchasi" || (m.resourceType || "Boshqa") === activeTab)
   )
+  // Materials ro'yxatini search va activeTab ga ko'ra filtrlash. title ni kichik harflarga o'girib, search bilan solishtiriladi. activeTab "Barchasi" bo'lsa barcha materiallar ko'rsatiladi, aks holda resourceType activeTab ga teng bo'lgan materiallar ko'rsatiladi.
 
   const openAdd = () => {
     setEditItem(null)
     setShowModal(true)
   }
 
+// Yangi material qo'shish uchun modalni ochish funksiyasi. editItem ni null ga o'rnatadi, chunki yangi material qo'shilmoqda, va showModal ni true ga o'zgartiradi.
+
   const openEdit = (e, item) => {
     e.stopPropagation()
     setEditItem(item)
     setShowModal(true)
   }
+
+// Materialni tahrirlash uchun modalni ochish funksiyasi. e.stopPropagation() chaqiriladi, chunki bu funksiya material kartasining onClick hodisasidan chaqiriladi va sahifani navigatsiya qilishni oldini olish kerak. editItem ni tahrirlanayotgan materialga o'rnatadi va showModal ni true ga o'zgartiradi.
 
   return (
     <div className="flex min-h-screen bg-slate-50">
@@ -116,6 +124,7 @@ export default function Dashboard() {
               </button>
             </div>
           )}
+           {/* Har bir kategoriya uchun button chiqaradi va tanlangan kategoriya o'zgaradi keyin sahifa qayta yuklanadi serverdan ma'lumot olinmasa error chiqadi */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {loading
               ? Array(8).fill(0).map((_, i) => <SkeletonCard key={i} />)
@@ -135,6 +144,7 @@ export default function Dashboard() {
                       }}
                     />
                   </div>
+                  {/* Agar loading bo'lsa, skeleton card ko'rsatiladi, bo'lmasa materiallar ya'ni kitoblar keyin card ustiga bossa detail page ga otvoradi, agar rasm ishlamasa defoult rasm ishlatiladi*/}
                   <div className="p-3">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-semibold text-slate-800 text-sm line-clamp-1">{item.title}</h3>
@@ -145,6 +155,9 @@ export default function Dashboard() {
                         {item.resourceType || "Boshqa"}
                       </span>
                     </div>
+
+                    {/* bunda Category_Colors kategoriyalarga rang beradi ya'ni resourceType "Darslik yo O'quv qo'llanma" shunaqalarga rang beradi */}
+
                     <p className="text-xs text-slate-500 line-clamp-2 mb-2">{item.summary || "Tavsif mavjud emas"}</p>
 
                     <div className="flex items-center gap-2">
@@ -154,12 +167,18 @@ export default function Dashboard() {
                       >
                         <Eye size={12} /> Ko'rish
                       </button>
-                      <button
+                      
+                      {/* Bu yerda eventPropagation hodisa bo'lyapti ya'ni: reactda (aslida browserda) eventlar ichkaridan tashqariga tarqaladi. qanaqa disek masalan; Agar cardni ko'rish uchun detail page ga otkazish uchun card ham button ham bosilsa, avval button onClick ishlaydi,keyin event cardga ham o'tadi, cardda onClick ham ishledi, bu bubbling deyiladi. bu yerda nima muammo dsek: agar e.stopPropagation() bo'lmasa, eye button bosilganda button navigate ishledi,keyin card navigate ishledi, keyin natijada 2 marta navigate chaqiriladi, bu degani double animation,double state change yoki keraksiz render keltirib chiqaradi, a stopPropagation() esa bu eventni yuqoriga chiqishini to'xtadi.*/} 
+
+                       <button
                         onClick={(e) => openEdit(e, item)}
                         className="p-1.5 border border-slate-200 rounded hover:bg-slate-50 transition"
                       >
                         <Edit size={14} className="text-slate-500" />
                       </button>
+
+                      {/* bu yerda esa edit button ishlatilyapti chunki card ma'lumotlarini o'zgartirish uchun modal ochiladi, onClick da openEdit funksiyasi chaqiriladi va item parametri sifatida tahrirlanayotgan material uzatiladi. */}
+
                     </div>
                   </div>
                 </div>
@@ -172,5 +191,6 @@ export default function Dashboard() {
         <MaterialModal onClose={() => setShowModal(false)} onSuccess={() => window.location.reload()} editItem={editItem} />
       )}
     </div>
+    // bu yerda esa modal componenti chaqiriladi, showModal true bo'lsa, MaterialModal componenti render qilinadi. onClose prop sifatida setShowModal ni false ga o'zgartiradigan funksiya uzatiladi, onSuccess prop sifatida esa sahifani qayta yuklaydigan funksiya uzatiladi, editItem esa tahrirlanayotgan material ma'lumotlarini uzatadi. Modal ochilganda, foydalanuvchi yangi material qo'shishi yoki mavjud materialni tahrirlashi mumkin va har ikkala holatda ham sahifani yangiledi, yangi ma'lumotlar bilan yangilangan ro'yxat ko'rsatiladi.
   )
 }

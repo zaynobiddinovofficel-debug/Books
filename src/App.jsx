@@ -14,5 +14,6 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
+    // bu yerda App componenti yaratiladi, bu componentda BrowserRouter, Routes va Route komponentlari yordamida saytning marshrutizatsiyasi tashkil etiladi. Bu marshrutizatsiya orqali foydalanuvchilar saytning turli sahifalariga o'tishlari mumkin bo'ladi. Har bir Route komponenti URL ga mos keladigan sahifani ko'rsatadi, masalan, "/" va "/materials" URL lari Dashboard sahifasini ko'rsatadi, "/material/:id" URL si esa MaterialDetail sahifasini ko'rsatadi. Agar foydalanuvchi mavjud bo'lmagan URL ga o'tishga harakat qilsa, "*" Route si orqali u avtomatik ravishda "/" URL ga yo'naltiriladi. Shuningdek, Toast komponenti ham App componentining ichida joylashgan bo'lib, bu komponent toast xabarlarini ko'rsatish uchun ishlatiladi.
   )
 }

@@ -14,6 +14,8 @@ export default function Header({ search, setSearch }) {
         />
       </div>
 
+      {/* bu yerda esa Header componenti yaratiladi, bu componentda qidiruv inputi, bildirishnoma ikonkasi va foydalanuvchi ma'lumotlari ko'rsatiladi. Search, Bell va LogOut ikonkalari lucide-react kutubxonasidan import qilinadi. Qidiruv inputi uchun search va setSearch propslari ishlatiladi, bu esa Dashboard componentidan keladi va qidiruv matnini boshqarish uchun kerak bo'ladi. */}
+      
       <button className="bg-blue-600 text-white text-sm px-4 py-2 rounded-xl hover:bg-blue-700 flex items-center gap-2">
         <Search size={15} />
         Qidirish
@@ -37,6 +39,8 @@ export default function Header({ search, setSearch }) {
           <LogOut size={15} />
           Kirish
         </button>
+        {/* bu yerda esa bildirishnoma ikonkasi va foydalanuvchi ma'lumotlari ko'rsatiladi. Bell ikonkasi uchun bildirishnoma mavjudligini ko'rsatish uchun qizil doira qo'shilgan. Foydalanuvchi ma'lumotlari qismida foydalanuvchining ismi, joylashuvi va avatar rasmi ko'rsatiladi. Kirish buttoni ham mavjud, bu button bosilganda foydalanuvchi tizimga kirishi mumkin bo'ladi. */}
+      {/* lekin bu ishlamedi */}
       </div>
     </header>
   )

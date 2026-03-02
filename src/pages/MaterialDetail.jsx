@@ -21,6 +21,8 @@ function SkeletonDetail() {
   )
 }
 
+// bu yerda Detail page uchun SkeletonDetail nomli komponent yaratiladi, bu komponent loading holatida korsatiladi va foydalanuvchiga ma'lumot kelyotganini bildirish uchun skleton carni chiqaradi.
+
 export default function MaterialDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -28,6 +30,8 @@ export default function MaterialDetail() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showModal, setShowModal] = useState(false)
+
+  // bu yerda esa MaterialDetail componenti yaratiladi, bu componentda materialning batafsil ma'lumotlari ko'rsatiladi. useParams hooki ishlatiladi, bu URL dan materialning id sini olish uchun kerak bo'ladi. useState va useEffect hooklari ishlatiladi, useNavigate hooki ham ishlatiladi, bu sahifalar orasida navigatsiya qilish uchun kerak bo'ladi. MaterialModal komponenti esa materialni tahrirlash uchun modal oynani ko'rsatadi.
 
   useEffect(() => {
     setLoading(true)
@@ -51,6 +55,8 @@ export default function MaterialDetail() {
       })
   }, [id])
 
+  // bu yerda esa useEffect hooki ishlatiladi, bu hook component birinchi marta render qilinganda va id o'zgarganda ishga tushadi. Bu hook ichida fetch funksiyasi yordamida serverdan ma'lumotlar olinadi, keyin esa URL dan olingan id ga mos keladigan material topiladi. Agar material topilmasa, error xabari chiqadi, agar topilsa, material state ga saqlanadi. Agar fetch jarayonida xatolik yuz bersa, error xabari chiqadi. Oxirida loading state false ga o'rnatiladi, bu ma'lumot olish jarayonining tugaganini bildiradi.
+
   return (
     <div className="flex min-h-screen bg-slate-50">
       <Sidebar />
@@ -63,6 +69,8 @@ export default function MaterialDetail() {
           <ArrowLeft size={16} /> Orqaga
         </button>
 
+        {/* bu yerda esa sahifaning asosiy qismi boshlanadi, bu yerda materialning batafsil ma'lumotlari ko'rsatiladi. orqaga buttoni ham bor bu esa asosiy sahifaga otkazadi.  */}
+
         <div className="max-w-xl mx-auto">
           {loading ? (
             <SkeletonDetail />
@@ -72,7 +80,10 @@ export default function MaterialDetail() {
               <button onClick={() => window.location.reload()} className="underline font-medium">
                 Qayta urinish
               </button>
-            </div>
+            </div> 
+
+            // bu yerda esa loading, error va material ma'lumotlari ko'rsatiladi. Agar loading true bo'lsa, SkeletonDetail komponenti ko'rsatiladi, agar error mavjud bo'lsa, xatolik xabari va qayta urinish buttoni ko'rsatiladi, agar material ma'lumotlari mavjud bo'lsa, materialning batafsil ma'lumotlari ko'rsatiladi.
+            
           ) : material ? (
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
               <div className="h-48 w-full relative overflow-hidden rounded-t-xl bg-slate-100">
@@ -89,6 +100,9 @@ export default function MaterialDetail() {
                   </div>
                 )}
               </div>
+
+              {/* bu yerda esa materialning cover rasmi ko'rsatiladi, agar cover mavjud bo'lmasa, FileText ikonkasi ko'rsatiladi. Agar cover rasmi mavjud bo'lsa, lekin yuklanmasa yoki xatolik yuz bersa, rasm o'rniga FileText ikonkasi ko'rsatiladi. */}
+
               <div className="p-4 sm:p-5 space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <h1 className="text-lg sm:text-xl font-bold text-slate-800 line-clamp-2">{material.title}</h1>
@@ -99,6 +113,8 @@ export default function MaterialDetail() {
                     <Edit size={13} /> Tahrirlash
                   </button>
                 </div>
+
+                {/* bu yerda esa materialning title qismi va tahrirlash buttoni ko'rsatiladi, title qismi line-clamp-2 klassi bilan cheklangan, bu esa title juda uzun bo'lsa, u holda faqat 2 qator ko'rsatiladi va qolgan qismi uch nuqta bilan almashtiriladi. Tahrirlash buttoni bosilganda, showModal state true ga o'rnatiladi, bu esa MaterialModal komponentini ko'rsatadi. */}
 
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   {material.summary || "Tavsif mavjud emas"}
@@ -118,6 +134,9 @@ export default function MaterialDetail() {
                     </div>
                   ))}
                 </div>
+
+                {/* bu yerda esa materialning muallifi, kategoriyasi va ko'rishlar soni ko'rsatiladi, har biri o'z ikonkasi bilan birga. Agar ma'lumot mavjud bo'lmasa, "—" belgisi ko'rsatiladi. */}
+
                 <div className="border border-slate-100 rounded-xl divide-y divide-slate-100">
                   {Object.entries(material)
                     .filter(([k]) => !["id", "cover", "authors"].includes(k))
@@ -130,15 +149,24 @@ export default function MaterialDetail() {
                       </div>
                     ))}
                 </div>
+
+                {/* bu yerda esa materialning qolgan ma'lumotlari ko'rsatiladi key va value sifatida olinadi, bu ma'lumotlar material obyektining id, cover va authors xususiyatlari tashqari barcha xususiyatlarini o'z ichiga oladi. Har bir xususiyat o'z nomi va qiymati bilan ko'rsatiladi, agar qiymat mavjud bo'lmasa, "—" belgisi ko'rsatiladi. */}
+
               </div>
             </div>
           ) : null}
+
+          {/* bu yerda esa agar material ma'lumotlari mavjud bo'lmasa, hech narsa ko'rsatilmaydi. */}
+
         </div>
       </div>
 
       {showModal && material && (
         <MaterialModal onClose={() => setShowModal(false)} onSuccess={() => window.location.reload()} editItem={material} />
       )}
-    </div>
+    </div> 
+    
+    // bu yerda esa sahifaning asosiy qismi tugaydi, agar showModal true bo'lsa va material ma'lumotlari mavjud bo'lsa, MaterialModal komponenti ko'rsatiladi, bu modal oynada materialni tahrirlash mumkin bo'ladi. onClose propsi modalni yopish uchun kerak bo'ladi, onSuccess propsi esa material muvaffaqiyatli tahrirlanganidan keyin sahifani yangilash uchun kerak bo'ladi. editItem propsi esa tahrirlanayotgan material ma'lumotlarini modalga uzatish uchun kerak bo'ladi.
+
   )
 }
